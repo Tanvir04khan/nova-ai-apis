@@ -81,6 +81,27 @@ class UserDAL {
       .from(users)
       .where(or(eq(users.email, email), eq(users.phoneNumber, phoneNumber)));
   }
+
+  saveGmailRefreshToken(userId: string, gmailRefreshToken: string) {
+    return this.database
+      .update(users)
+      .set({ gmailRefreshToken: gmailRefreshToken })
+      .where(eq(users.userId, userId))
+      .returning({
+        userId: users.userId,
+      });
+  }
+
+  getGmailRefreshToken(userId: string) {
+    return this.database.query.users.findFirst({
+      columns: {
+        userId: true,
+        gmailRefreshToken: true,
+      },
+
+      where: eq(users.userId, userId),
+    });
+  }
 }
 
 export default UserDAL;

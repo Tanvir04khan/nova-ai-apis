@@ -1,0 +1,1 @@
+CREATE TYPE "public"."ToolChatRole" AS ENUM('user', 'model');

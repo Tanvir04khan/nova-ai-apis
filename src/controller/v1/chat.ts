@@ -7,6 +7,8 @@ import {
 } from "../../services/google-genai";
 import DatabaseAccessLayer from "../../database/access-layer";
 
+import { model as dModel } from "../../utils";
+
 const getResponseFromAI = async (
   res: Response,
   service: string,
@@ -37,7 +39,7 @@ const getResponseFromAI = async (
             parts: [{ text: message }],
           },
         ],
-        model ?? "gemini-2.5-flash-lite",
+        model ?? dModel,
         (chunk: string) => {
           fullText += chunk;
           res.write(chunk);

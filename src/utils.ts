@@ -3,6 +3,10 @@ import { env } from "./config/env";
 import bcrypt from "bcrypt";
 import DatabaseAccessLayer from "./database/access-layer";
 import { sign, SignOptions } from "jsonwebtoken";
+import { GeminiModels } from "./services/google-genai";
+import axios, { AxiosHeaders } from "axios";
+
+export const model: GeminiModels = "gemma-4-26b-a4b-it";
 
 export enum APIStatus {
   SUCCESS = "success",
@@ -19,6 +23,13 @@ export enum StatusCode {
   CONFLICT = 409,
   SERVER_ERROR = 500,
 }
+
+export enum mcpRoute {
+  GetTools = "/api/v1/tools",
+  processEvent = "/api/v1/tools/trigger-event",
+}
+
+export const getMCPURL = (url: string) => `${env.MCP_SERVER_URL}${url}`;
 
 const generateRefreshToken = () => {
   if (!env.SERVER_KEY || !env.SALT_ROUNDS) {
@@ -84,3 +95,40 @@ export enum MessageRole {
   User = "user",
   Model = "model",
 }
+
+export enum ToolChatRole {
+  User = "user",
+  Model = "model",
+}
+
+export const generateMCPRequestHeader = async (
+  geminiSelectedTool: string,
+  database: DatabaseAccessLayer,
+  userId: string,
+) => {
+  const apiConfig: axios.AxiosRequestConfig<any> = {
+    // headers: {
+    //   "Content-Type": "application/json",
+    //   authorization: env.MCP_SERVER_SECRETKEY,
+    // },
+  };
+
+  const headers = new AxiosHeaders();
+  headers.set("Content-Type", "application/json");
+  headers.set("authorization", env.MCP_SERVER_SECRETKEY);
+
+  const selectedTool: {
+    eventName: string;
+  } = JSON.parse(geminiSelectedTool);
+
+  if (selectedTool.eventName === "send_email") {
+    const refreshToken = await database.userDAL.getGmailRefreshToken(userId);
+
+    headers.set("X-Gmail-Refresh-Token", refreshToken?.gmailRefreshToken);
+
+    // apiConfig.headers!["X-Gmail-Refresh-Token"] =
+    //   refreshToken?.gmailRefreshToken;
+  }
+
+  return headers;
+};

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorModel } from "../../models/errorModel";
-import { APIStatus, MessageRole, StatusCode } from "../../utils";
+import { APIStatus, MessageRole, model, StatusCode } from "../../utils";
 import DatabaseAccessLayer from "../../database/access-layer";
 import { generateGeminiContent } from "../../services/google-genai";
 import { ResponseModel } from "../../models/responseModel";
@@ -24,7 +24,7 @@ Question:
 ${message}
 `;
 
-  const title = await generateGeminiContent(prompt, "gemini-2.5-flash-lite");
+  const title = await generateGeminiContent(prompt, model);
 
   if (!title) {
     const maxWords = 6;

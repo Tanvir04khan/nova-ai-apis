@@ -11,6 +11,7 @@ const errorHandler = (
 ) => {
   try {
     if (err instanceof ErrorModel) {
+      console.log(err.message);
       return res
         .status(err.statusCode || StatusCode.SERVER_ERROR)
         .json(
@@ -23,7 +24,7 @@ const errorHandler = (
         );
     }
 
-    console.error(err);
+    console.error((err as any).message);
     return res
       .status(StatusCode.SERVER_ERROR)
       .json(

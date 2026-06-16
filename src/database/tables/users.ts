@@ -5,6 +5,7 @@ import { text } from "drizzle-orm/pg-core";
 import { uuid } from "drizzle-orm/pg-core";
 import { pgTable } from "drizzle-orm/pg-core";
 import { conversations } from "./conversations";
+import { toolChats } from "./toolChats";
 
 export const users = pgTable("users", {
   userId: uuid("userId").primaryKey().defaultRandom().notNull(),
@@ -15,6 +16,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   refreshToken: text("refreshToken"),
   refreshTokenExpiry: timestamp("refreshTokenExpiry"),
+  gmailRefreshToken: text("gmailRefreshToken"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   createdBy: varchar("createdBy", { length: 255 }).notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
@@ -23,4 +25,5 @@ export const users = pgTable("users", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   conversations: many(conversations),
+  toolChats: many(toolChats),
 }));

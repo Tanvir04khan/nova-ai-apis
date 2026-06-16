@@ -12,6 +12,8 @@ import { getOrigin } from "./utils";
 import chatRouter from "./router/v1/chatRouter";
 import conversationRouter from "./router/v1/conversationRouter";
 import messageRouter from "./router/v1/messageRouter";
+import googleAuthRouter from "./router/v1/googleAuthRouter";
+import toolRouter from "./router/v1/toolsRouter";
 
 const app = express();
 
@@ -41,8 +43,12 @@ app.use(conversationRouter);
 
 app.use(messageRouter);
 
+app.use(googleAuthRouter);
+
+app.use(toolRouter);
+
 app.use(errorHandler);
 
-app.listen(env.PORT, () => {
-  console.log(`Server running on port ${env.PORT}`);
+app.listen(3000, () => {
+  console.log(`Server running on port ${3000}`);
 });
