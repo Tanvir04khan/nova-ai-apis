@@ -11,7 +11,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsup",
+    "build": "tsc -b",
     "start": "node dist/index.js"
   },
   "dependencies": {
