@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -b",
-    "start": "node dist/index.js"
+    "start": "drizzle-kit generate && drizzle-kit migrate && node dist/index.js"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
