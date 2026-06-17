@@ -3,12 +3,7 @@ import { env } from "../config/env";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./schema";
 
-let connectionString: string = "";
-const environment = env.ENV;
-
-if (environment === "development") {
-  connectionString = env.DATABASE_URL || "";
-}
+const connectionString: string = env.DATABASE_URL || "";
 
 if (!connectionString) {
   throw new Error("DATABASE_URL is not defined in the environment variables.");
