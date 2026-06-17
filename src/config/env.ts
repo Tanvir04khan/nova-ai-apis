@@ -15,6 +15,7 @@ export const env = {
   NOVA_WEBAPP_URL: process.env.NOVA_WEBAPP_URL,
   MCP_SERVER_SECRETKEY: process.env.MCP_SERVER_SECRETKEY,
   MCP_SERVER_URL: process.env.MCP_SERVER_URL,
+  GOOGLE_AUTH_REDIRECT_URI: process.env.GOOGLE_AUTH_REDIRECT_URI,
 };
 
 export type ENV = typeof env;
