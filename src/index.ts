@@ -17,10 +17,16 @@ import toolRouter from "./router/v1/toolsRouter";
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://nova-ai-jet-pi.vercel.app",
+  "https://novaai.app",
+];
+
 app
   .disable("x-powered-by")
   .use(urlencoded({ extended: true }))
-  .use(cors({ origin: getOrigin(), credentials: true }))
+  .use(cors({ origin: allowedOrigins, credentials: true }))
   .use(json())
   .use(cookieParser())
   .use(attachDAL);
