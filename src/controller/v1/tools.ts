@@ -201,6 +201,8 @@ export const tools = async (
       );
     }
 
+    console.log("userToolChat", userToolChat);
+
     const availableTools = await axios.get<ApiResponse<MCPToolsResponse>>(
       getMCPURL(mcpRoute.GetTools),
       {
@@ -210,6 +212,8 @@ export const tools = async (
         },
       },
     );
+
+    console.log("availableTools", availableTools.data.data);
 
     if (!availableTools?.data?.data?.tools?.length) {
       return await sendToolErrorResponse(
@@ -225,6 +229,8 @@ export const tools = async (
       getInputSchemaPrompt(JSON.stringify(availableTools.data.data), message),
       model,
     );
+
+    console.log("G response", response);
 
     if (!response) {
       return await sendToolErrorResponse(
@@ -242,6 +248,8 @@ export const tools = async (
       response,
     );
 
+    console.log("updatedUserToolChat", updtaedUserToolChat);
+
     if (!updtaedUserToolChat.length) {
       return await sendToolErrorResponse(
         res,
@@ -254,7 +262,7 @@ export const tools = async (
 
     const headers = await generateMCPRequestHeader(response, databse, userId);
 
-    console.log(headers);
+    console.log("MCP headers", headers);
 
     const toolResponse = await axios.post(
       getMCPURL(mcpRoute.processEvent),
@@ -262,10 +270,14 @@ export const tools = async (
       { headers },
     );
 
+    console.log("toolResponse", toolResponse.data);
+
     const geminiFinalResponse = await generateGeminiContent(
       getMessageResponsePrompt(message, JSON.stringify(toolResponse.data)),
       model,
     );
+
+    console.log("geminiFinalResponse", geminiFinalResponse);
 
     if (!geminiFinalResponse) {
       return await sendToolErrorResponse(
@@ -283,6 +295,8 @@ export const tools = async (
       geminiFinalResponse,
       JSON.stringify(toolResponse.data),
     );
+
+    console.log("modelToolChatId", modelToolChatId);
 
     res.status(StatusCode.OK).json(
       new ResponseModel(
