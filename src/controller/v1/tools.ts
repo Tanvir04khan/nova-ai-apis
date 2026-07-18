@@ -38,6 +38,7 @@ Rules:
 8. If a required field cannot be determined from the user's message, set its value to null.
 9. Preserve the exact property names defined in the tool schema.
 10. Include a property called "toolName" containing the selected tool name.
+11. and "eventName" must match with the selected tool's eventName.
 
 Available Tools:
 
