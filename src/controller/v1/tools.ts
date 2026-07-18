@@ -310,6 +310,17 @@ export const tools = async (
       ),
     );
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios Error");
+      console.error("URL:", error.config?.url);
+      console.error("Method:", error.config?.method);
+      console.error("Status:", error.response?.status);
+      console.error("Response:", error.response?.data);
+      console.error("Headers:", error.response?.headers);
+    } else {
+      console.error(error);
+    }
+
     next(error);
   }
 };
@@ -344,19 +355,6 @@ export const getToolChats = async (
         ),
       );
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios Error");
-      console.error("URL:", error.config?.url);
-      console.error("Method:", error.config?.method);
-      console.error("Status:", error.response?.status);
-      console.error("Response:", error.response?.data);
-      console.error("Headers:", error.response?.headers);
-    } else {
-      console.error(error);
-    }
-
-    next(error);
-
     next(error);
   }
 };
